@@ -93,7 +93,7 @@ main.content-wrap {
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 .hero-overlay {
   position: absolute;
@@ -184,7 +184,7 @@ main.content-wrap {
   right: 4.04%;
   width: 62.97%;
   height: 83.33%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .sidebar-content {
@@ -243,7 +243,7 @@ main.content-wrap {
 .phone-frame img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .sticky-nav {
