@@ -200,6 +200,21 @@ video.hero-bg {
   width: 62.97%;
   height: 83.33%;
   object-fit: contain;
+  clip-path: inset(1px);
+}
+#section-1 .content-card:nth-child(2) video {
+  clip-path: inset(24px 4px);
+}
+#section-1 > .detail + .detail .content-card:nth-child(2) video {
+  clip-path: inset(4px 16px);
+}
+#section-1 > .detail + .detail .content-card:first-child img {
+  top: 8.33%;
+  right: 0;
+  bottom: 0;
+  height: calc(100% - 8.33%);
+  width: auto;
+  object-fit: contain;
 }
 
 .sidebar-content {
