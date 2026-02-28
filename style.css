@@ -5,7 +5,7 @@
   --color-dark: #07103b;
   --color-cta: #1a1915;
   --font: 'Inter', sans-serif;
-  --max-w: 1240px;
+  --max-w: 1880px;
   --pad: 24px;
 
   --gap-section: clamp(80px, 18.75vw, 240px);
@@ -40,9 +40,22 @@ main.content-wrap {
   margin: 0 auto;
   padding: 0 var(--pad);
 }
+.title-stage {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.title-stage .page-title {
+  position: absolute;
+}
+.title-stage .page-title:first-child {
+  position: relative;
+}
 
 .case-study + .case-study { margin-top: var(--gap-section); }
-.title-area + .title-area + .case-study { margin-top: 480px; }
+.title-stage + .case-study { margin-top: 480px; }
 
 .section-header {
   padding: 0 var(--pad);
@@ -362,6 +375,20 @@ main.content-wrap {
 }
 .title-reveal.visible {
   clip-path: inset(0 0 0% 0);
+  transform: translateY(0);
+}
+
+.blur-in {
+  opacity: 0;
+  filter: blur(10px);
+  transform: translateY(8px);
+  transition: opacity 1s ease-out,
+              filter 1s ease-out,
+              transform 1s ease-out;
+}
+.blur-in.visible {
+  opacity: 1;
+  filter: blur(0);
   transform: translateY(0);
 }
 

@@ -111,8 +111,28 @@ function retryStalledVideos() {
 });
 
 window.addEventListener('load', () => {
-  const firstTitle = document.querySelector('.title-reveal');
-  if (firstTitle) firstTitle.classList.add('visible');
+  const blurTitles = document.querySelectorAll('.blur-in');
+  const first = blurTitles[0];
+  const second = blurTitles[1];
+
+  if (!first) return;
+
+  first.classList.add('visible');
+
+  first.addEventListener('transitionend', function onIn(e) {
+    if (e.propertyName !== 'opacity') return;
+    first.removeEventListener('transitionend', onIn);
+
+    setTimeout(() => {
+      first.classList.remove('visible');
+
+      first.addEventListener('transitionend', function onOut(e) {
+        if (e.propertyName !== 'opacity') return;
+        first.removeEventListener('transitionend', onOut);
+        if (second) second.classList.add('visible');
+      });
+    }, 600);
+  });
 });
 
 const stickyNav = document.querySelector('.sticky-nav');
