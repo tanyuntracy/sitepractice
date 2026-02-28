@@ -135,6 +135,52 @@ window.addEventListener('load', () => {
   });
 });
 
+// One-time snap: intercept first downward scroll in title area and snap to section 1
+const snapTarget = document.querySelector('#section-1 .section-header');
+let hasSnapped = false;
+let touchStartY = 0;
+
+function doSnap() {
+  hasSnapped = true;
+  cleanup();
+  const y = snapTarget.getBoundingClientRect().top + window.scrollY - 64;
+  document.documentElement.style.scrollBehavior = 'auto';
+  window.scrollTo({ top: y, behavior: 'smooth' });
+  setTimeout(() => { document.documentElement.style.scrollBehavior = ''; }, 1200);
+}
+
+function cleanup() {
+  window.removeEventListener('wheel', onWheel);
+  window.removeEventListener('touchstart', onTouchStart);
+  window.removeEventListener('touchmove', onTouchMove);
+  window.removeEventListener('keydown', onSnapKey);
+}
+
+function inTitleArea() {
+  return !hasSnapped && window.scrollY < window.innerHeight * 0.5;
+}
+
+function onWheel(e) {
+  if (!inTitleArea()) return;
+  if (e.deltaY > 0) { e.preventDefault(); doSnap(); }
+}
+function onTouchStart(e) { touchStartY = e.touches[0].clientY; }
+function onTouchMove(e) {
+  if (!inTitleArea()) return;
+  if (touchStartY - e.touches[0].clientY > 10) { e.preventDefault(); doSnap(); }
+}
+function onSnapKey(e) {
+  if (!inTitleArea()) return;
+  if (e.code === 'ArrowDown' || e.code === 'PageDown' || e.code === 'Space') {
+    e.preventDefault(); doSnap();
+  }
+}
+
+window.addEventListener('wheel', onWheel, { passive: false });
+window.addEventListener('touchstart', onTouchStart, { passive: true });
+window.addEventListener('touchmove', onTouchMove, { passive: false });
+window.addEventListener('keydown', onSnapKey);
+
 const stickyNav = document.querySelector('.sticky-nav');
 const section1 = document.querySelector('#section-1');
 
