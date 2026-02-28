@@ -12,10 +12,23 @@ document.querySelectorAll('.animate-on-scroll, .title-reveal')
 
 const videoObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      const video = entry.target;
-      video.src = video.dataset.src;
-      video.play();
+    const video = entry.target;
+    if (entry.isIntersecting && !video.dataset.loaded) {
+      video.dataset.loaded = '1';
+      if (video.dataset.srcWebm) {
+        const webm = document.createElement('source');
+        webm.src = video.dataset.srcWebm;
+        webm.type = 'video/webm';
+        video.appendChild(webm);
+      }
+      if (video.dataset.srcMp4) {
+        const mp4 = document.createElement('source');
+        mp4.src = video.dataset.srcMp4;
+        mp4.type = 'video/mp4';
+        video.appendChild(mp4);
+      }
+      video.load();
+      video.play().catch(() => {});
       videoObserver.unobserve(video);
     }
   });
