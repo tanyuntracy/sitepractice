@@ -202,6 +202,18 @@ video.hero-bg {
   object-fit: contain;
   clip-path: inset(1px);
 }
+.content-card--full {
+}
+.content-card--full img {
+  left: 4.04%;
+  right: auto;
+  top: 18.33%;
+  width: 91.92%;
+  height: 77.5%;
+  object-fit: contain;
+  clip-path: none;
+}
+
 #section-1 .content-card:nth-child(2) video {
   clip-path: inset(24px 4px);
 }
