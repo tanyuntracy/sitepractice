@@ -37,13 +37,8 @@ main.content-wrap {
 }
 .title-area {
   max-width: 800px;
+  margin: 0 auto;
   padding: 0 var(--pad);
-}
-@media (min-width: 1280px) {
-  .title-area {
-    margin-left: 241px;
-    padding: 0;
-  }
 }
 
 .case-study + .case-study { margin-top: var(--gap-section); }
@@ -383,7 +378,6 @@ main.content-wrap {
   .nav-side { display: none; }
   .nav-links { display: none; }
   .sticky-nav { justify-content: center; }
-  .title-area { max-width: 100%; margin-left: 0; }
 }
 
 @media (min-width: 768px) and (max-width: 1279px) {
@@ -392,5 +386,4 @@ main.content-wrap {
   .card-group-sidebar { width: 140px; }
   .sidebar-text { width: 140px; padding: 24px 0 0 16px; }
   .sidebar-text p { width: 100%; }
-  .title-area { max-width: 100%; margin-left: auto; margin-right: auto; }
 }
