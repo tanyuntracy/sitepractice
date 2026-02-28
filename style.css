@@ -55,10 +55,12 @@ main.content-wrap {
 }
 
 .case-study + .case-study { margin-top: var(--gap-section); }
-.title-stage + .case-study { margin-top: 480px; }
+
+#section-1 {
+  scroll-margin-top: 64px;
+}
 
 .section-header {
-  padding: 0 var(--pad);
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -111,7 +113,6 @@ main.content-wrap {
   display: flex;
   gap: var(--gap-header);
   align-items: flex-start;
-  padding: 0 var(--pad);
 }
 .info-meta {
   display: flex;
