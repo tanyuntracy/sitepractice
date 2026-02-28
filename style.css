@@ -103,7 +103,15 @@ main.content-wrap {
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
+}
+video.hero-bg {
+  position: relative;
+  height: auto;
+  object-fit: fill;
+}
+.hero:has(video.hero-bg) {
+  aspect-ratio: unset;
 }
 .hero-overlay {
   position: absolute;
@@ -165,12 +173,10 @@ main.content-wrap {
   gap: 24px;
   flex: 1;
   min-width: 0;
-  max-width: 991px;
 }
 .content-card {
   position: relative;
   width: 100%;
-  max-width: 991px;
   aspect-ratio: 991 / 480;
   background: #fff;
   overflow: hidden;
@@ -203,15 +209,15 @@ main.content-wrap {
 }
 .sidebar-text {
   flex-shrink: 0;
-  padding: 24px 0 0 24px;
   width: 185px;
   font-size: 16px;
   line-height: 1.3;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-self: stretch;
-  overflow: clip;
+  position: sticky;
+  top: 64px;
+  height: calc(100vh - 192px);
 }
 .sidebar-text p {
   width: 161px;
