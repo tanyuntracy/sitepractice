@@ -92,6 +92,54 @@ function loadVideoSources(video) {
   video.dataset.loaded = '1';
   ensureMuted(video);
 
+  const wasPreloaded = video.dataset.preloading === '1';
+  if (!wasPreloaded) {
+    if (video.dataset.srcWebm) {
+      const webm = document.createElement('source');
+      webm.src = video.dataset.srcWebm;
+      webm.type = 'video/webm';
+      video.appendChild(webm);
+    }
+    if (video.dataset.srcMp4) {
+      const mp4 = document.createElement('source');
+      mp4.src = video.dataset.srcMp4;
+      mp4.type = 'video/mp4';
+      video.appendChild(mp4);
+    }
+  }
+
+  video.preload = 'auto';
+
+  video.addEventListener('stalled', () => stalledVideos.add(video));
+  video.addEventListener('error', () => stalledVideos.add(video));
+  video.addEventListener('playing', () => stalledVideos.delete(video));
+
+  if (wasPreloaded && video.readyState >= 1) {
+    stalledVideos.delete(video);
+    if (video.dataset.inView === '1') tryPlay(video);
+    return;
+  }
+
+  if (!wasPreloaded) video.load();
+
+  const onReady = () => {
+    stalledVideos.delete(video);
+    if (video.dataset.inView === '1') tryPlay(video);
+  };
+
+  if (video.readyState >= 3) {
+    onReady();
+  } else {
+    video.addEventListener('canplay', onReady, { once: true });
+    video.addEventListener('loadeddata', onReady, { once: true });
+  }
+}
+
+function preloadVideoFull(video) {
+  if (video.dataset.loaded || video.dataset.preloading) return;
+  video.dataset.preloading = '1';
+  ensureMuted(video);
+
   if (video.dataset.srcWebm) {
     const webm = document.createElement('source');
     webm.src = video.dataset.srcWebm;
@@ -105,47 +153,47 @@ function loadVideoSources(video) {
     video.appendChild(mp4);
   }
 
+  video.preload = 'auto';
   video.load();
-
-  const onReady = () => {
-    stalledVideos.delete(video);
-    tryPlay(video);
-  };
-
-  if (video.readyState >= 3) {
-    onReady();
-  } else {
-    video.addEventListener('canplay', onReady, { once: true });
-    video.addEventListener('loadeddata', onReady, { once: true });
-  }
-
-  video.addEventListener('error', () => stalledVideos.add(video), { once: true });
 }
+
+const preloadObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      preloadVideoFull(entry.target);
+      preloadObserver.unobserve(entry.target);
+    }
+  });
+}, { rootMargin: '200% 0px' });
 
 const playbackObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     const video = entry.target;
     if (entry.isIntersecting) {
+      video.dataset.inView = '1';
       if (!video.dataset.loaded) {
         loadVideoSources(video);
-      } else {
-        video.currentTime = 0;
+      } else if (video.paused) {
+        if (video.ended) video.currentTime = 0;
         tryPlay(video);
       }
-    } else if (video.dataset.loaded) {
-      video.pause();
+    } else {
+      video.dataset.inView = '0';
+      if (video.dataset.loaded) video.pause();
     }
   });
-}, { rootMargin: '200px' });
+}, { rootMargin: '50% 0px' });
 
 document.querySelectorAll('.lazy-video').forEach(v => {
   ensureMuted(v);
+  preloadObserver.observe(v);
   playbackObserver.observe(v);
 });
 
-function retryStalledVideos() {
+setInterval(() => {
   if (!stalledVideos.size) return;
   stalledVideos.forEach(video => {
+    if (video.dataset.inView !== '1') return;
     ensureMuted(video);
     video.load();
     video.addEventListener('canplay', () => {
@@ -153,22 +201,15 @@ function retryStalledVideos() {
       tryPlay(video);
     }, { once: true });
   });
-}
+}, 3000);
 
-['click', 'touchstart', 'scroll'].forEach(evt => {
-  document.addEventListener(evt, () => {
-    document.querySelectorAll('.lazy-video').forEach(video => {
-      if (video.dataset.loaded && (video.paused || video.ended)) {
-        const rect = video.getBoundingClientRect();
-        const inView = rect.top < window.innerHeight + 200 && rect.bottom > -200;
-        if (inView) {
-          video.currentTime = 0;
-          tryPlay(video);
-        }
-      }
-    });
-    retryStalledVideos();
-  }, { once: true, passive: true });
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) return;
+  document.querySelectorAll('.lazy-video').forEach(video => {
+    if (video.dataset.loaded && video.dataset.inView === '1' && video.paused) {
+      tryPlay(video);
+    }
+  });
 });
 
 window.addEventListener('load', () => {
