@@ -127,6 +127,31 @@ video.hero-bg {
   position: absolute;
 }
 
+.hero--gallery {
+  aspect-ratio: unset;
+  overflow: hidden;
+  border-radius: 0;
+}
+.hero-gallery-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.hero-gallery-images {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: 80px;
+}
+.hero-gallery-images img {
+  flex: 1;
+  min-width: 0;
+  width: 0;
+  height: auto;
+  object-fit: cover;
+  display: block;
+}
+
 .hero-graphic-wrap {
   position: absolute;
   inset: 40px;
@@ -245,6 +270,13 @@ video.hero-bg {
   object-fit: contain;
 }
 
+#section-3 > .detail:first-of-type .content-card:nth-child(2) video {
+  width: auto;
+  height: calc(100% - 8.33%);
+  object-fit: contain;
+  border: 2px solid #151725;
+}
+
 .sidebar-content {
   display: flex;
   gap: var(--gap-header);
@@ -277,6 +309,11 @@ video.hero-bg {
   min-width: 0;
 }
 
+.detail:has(.content-card--image-only) .sidebar-text {
+  position: static;
+  height: auto;
+}
+
 .interstitial-title {
   min-height: 90vh;
   display: flex;
@@ -301,6 +338,13 @@ video.hero-bg {
 }
 .project + .project { margin-top: var(--gap-sub); }
 .project .hero { margin-bottom: var(--gap-header); }
+
+#section-3 .hero-graphic-wrap {
+  container-type: size;
+}
+#section-3 .hero-graphic {
+  border-radius: 3cqh;
+}
 
 #section-4 .project:first-of-type .hero-graphic-wrap,
 #section-4 .project:last-of-type .hero-graphic-wrap {
@@ -574,9 +618,57 @@ video.hero-bg {
 
   .section-4-title { max-width: none; width: 100%; }
 
-  .content-card { aspect-ratio: auto; min-height: 300px; }
+  .hero-gallery-images {
+    flex-direction: column;
+    gap: 16px;
+  }
+  .hero-gallery-images img {
+    flex: none;
+    width: 100%;
+    min-width: unset;
+  }
+
+  .content-card {
+    aspect-ratio: auto;
+    min-height: auto;
+    height: 280px;
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    gap: 16px;
+    overflow: hidden;
+  }
+  .content-card-label {
+    position: static;
+    max-width: none;
+    width: 100%;
+    font-size: 14px;
+    line-height: 1.4;
+    letter-spacing: 0.14px;
+    color: var(--color-text-sub);
+    text-align: center;
+  }
   .content-card img,
-  .content-card video { width: calc(100% - 80px); height: auto; }
+  .content-card video {
+    position: static;
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    max-height: 100%;
+    object-fit: contain;
+    object-position: center;
+    flex-shrink: 1;
+    min-height: 0;
+    clip-path: none;
+  }
+  .content-card--image-only {
+    align-items: center;
+    justify-content: center;
+  }
+  .content-card--image-only img {
+    max-width: 100%;
+    max-height: none;
+  }
   .sticky-nav {
     padding: 0 8px 32px;
   }
