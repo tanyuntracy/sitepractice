@@ -10,7 +10,7 @@ Meta description: Design portfolio by Tracy Tan
 INTRO / TITLE AREA
 -------------------
 For Intercom
-Scroll to see complex system design across brands and platforms for human and machines.
+Scroll to see complex system design across brands and platforms for humans and machines.
 
 
 ================================================================================
@@ -37,7 +37,7 @@ Note: Ongoing work, the images are examples to showcase the scope.
 Card labels: Visual design, Motion design, Content design
 
 Detail Block 2:
-I defined the system architecture and structured outputs, validated the architecture with hands-on proof-of-concept builds. The goal: readable by humans, executable by machines.
+I defined the system architecture and structured outputs, and validated the architecture with hands-on proof-of-concept builds. The goal: readable by humans, executable by machines.
 
 Note: Ongoing work, the images are examples to showcase the scope.
 
@@ -72,7 +72,7 @@ Gallery Cards:
   11% of our merchants operate with their own drivers and are actively looking for logistics solutions.
 
 Detail Block 1:
-Led discovery across complex manual workflows, identified core operational gaps, and transformed operational gaps into clear and actionable user-centered product experiences.
+Led discovery across complex manual workflows, identified core operational gaps, and transformed them into clear and actionable user-centered product experiences.
 
 Card labels: Before, After
 
@@ -165,7 +165,7 @@ What I did: Product strategy and vision, Product design direction, Main driver f
 Worked with: Multidisciplinary design team
 
 Summary:
-Redefined the business and product strategic direction from delivery-only to a multi-task platform that defined the short- and long-term roadmap of the product. Set the experience vision in visual, motion, tone, behavioral mechanics in the gaming direction grounded in customer insights that led to improved CSAT and efficiency.
+Redefined the business and product strategic direction from delivery-only to a multi-task platform that defined the short- and long-term roadmap of the product. Set the experience vision across visual, motion, tone, and behavioral mechanics with a gaming-inspired direction grounded in customer insights, leading to improved CSAT and efficiency.
 
 
 ================================================================================
