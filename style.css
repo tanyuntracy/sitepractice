@@ -18,13 +18,14 @@
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
-body { font-family: var(--font); color: var(--color-text); background: var(--color-bg); padding-bottom: 72px; }
+body { font-family: var(--font); color: var(--color-text); background: var(--color-bg); padding-bottom: 72px; overflow-x: clip; }
 img, video { display: block; max-width: 100%; }
 
 main.content-wrap {
   max-width: var(--max-w);
   margin: 0 auto;
   padding: 0 var(--pad);
+  overflow: visible;
 }
 
 .page-title {
@@ -91,7 +92,6 @@ main.content-wrap {
 .hero {
   position: relative;
   width: 100%;
-  max-width: var(--max-w);
   aspect-ratio: 1240 / 600;
   overflow: hidden;
 }
@@ -286,11 +286,14 @@ video.hero-bg {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 var(--pad);
+  padding: 0 var(--pad) 16px;
   z-index: 50;
   pointer-events: none;
 }
 .sticky-nav > * { pointer-events: auto; }
+.sticky-nav:not(.nav-ready) * {
+  transition: none !important;
+}
 .nav-side {
   font-size: 14px;
   line-height: 1.4;
@@ -331,19 +334,30 @@ video.hero-bg {
   color: var(--color-text-sub);
   text-decoration: none;
   white-space: nowrap;
+  padding-bottom: 4px;
+}
+.nav-link:hover {
+  color: var(--color-text);
 }
 .nav-link.active {
   color: var(--color-text);
   font-weight: 500;
   text-decoration: underline;
   text-decoration-skip-ink: none;
-  text-underline-offset: 10%;
+  text-underline-offset: 4px;
+  text-underline-position: from-font;
+  padding-bottom: 4px;
 }
 .nav-name {
   font-size: 20px;
   font-weight: 500;
   line-height: 1.4;
   letter-spacing: -0.2px;
+  color: inherit;
+  text-decoration: none;
+}
+.nav-name:hover {
+  color: var(--color-text-sub);
 }
 .nav-cta {
   background: var(--color-cta);

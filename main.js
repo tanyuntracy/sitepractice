@@ -1,3 +1,6 @@
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+window.scrollTo(0, 0);
+
 const scrollObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -187,16 +190,89 @@ window.addEventListener('touchstart', onTouchStart, { passive: true });
 window.addEventListener('touchmove', onTouchMove, { passive: false });
 window.addEventListener('keydown', onSnapKey);
 
+// Scroll-driven hero full-bleed expansion
+(function initHeroBleed() {
+  const wrap = document.querySelector('.content-wrap');
+  const heroes = document.querySelectorAll('.hero');
+  if (!wrap || !heroes.length) return;
+
+  function getContentEdge() {
+    const r = wrap.getBoundingClientRect();
+    const pad = parseFloat(getComputedStyle(wrap).paddingLeft) || 0;
+    return { left: r.left + pad, width: r.width - pad * 2 };
+  }
+
+  function update() {
+    const viewH = window.innerHeight;
+    const viewW = document.documentElement.clientWidth;
+    const content = getContentEdge();
+
+    heroes.forEach(hero => {
+      const hasInline = hero.style.width;
+      if (hasInline) {
+        hero.style.width = '';
+        hero.style.maxWidth = '';
+        hero.style.marginLeft = '';
+      }
+
+      const rect = hero.getBoundingClientRect();
+      const heroH = rect.height;
+
+      if (rect.bottom <= 0 || rect.top >= viewH) return;
+
+      const clampedTop = Math.max(0, rect.top);
+      const clampedBottom = Math.min(viewH, rect.bottom);
+      const visible = (clampedBottom - clampedTop) / heroH;
+      const progress = 1 - Math.pow(1 - Math.min(1, visible), 3);
+
+      if (progress < 0.01) return;
+
+      const naturalW = content.width;
+      const targetW = viewW;
+      const currentW = naturalW + (targetW - naturalW) * progress;
+      const shiftLeft = content.left * progress;
+
+      hero.style.width = currentW + 'px';
+      hero.style.maxWidth = 'none';
+      hero.style.marginLeft = -shiftLeft + 'px';
+    });
+  }
+
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(() => { update(); ticking = false; });
+      ticking = true;
+    }
+  }, { passive: true });
+
+  window.addEventListener('resize', update);
+  update();
+})();
+
 const stickyNav = document.querySelector('.sticky-nav');
 const section1 = document.querySelector('#section-1');
 
 if (stickyNav && section1) {
-  new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      const isBelow = !entry.isIntersecting && entry.boundingClientRect.top > 0;
-      stickyNav.classList.toggle('expanded', !isBelow);
-    });
-  }, { threshold: 0 }).observe(section1);
+  stickyNav.classList.remove('expanded');
+
+  let navTicking = false;
+
+  function updateNav() {
+    stickyNav.classList.toggle('expanded', window.scrollY > section1.offsetTop - 100);
+  }
+
+  window.addEventListener('load', () => {
+    updateNav();
+    requestAnimationFrame(() => stickyNav.classList.add('nav-ready'));
+  });
+
+  window.addEventListener('scroll', () => {
+    if (!navTicking) {
+      requestAnimationFrame(() => { updateNav(); navTicking = false; });
+      navTicking = true;
+    }
+  }, { passive: true });
 }
 
 const navLinks = document.querySelectorAll('.nav-link');
@@ -230,7 +306,11 @@ if (navLinks.length && sections.length) {
     for (const [id, ratio] of visibilityMap) {
       if (ratio > bestRatio) { bestRatio = ratio; bestId = id; }
     }
-    if (bestId) setActiveLink(sectionIds.indexOf(bestId));
+    if (bestRatio > 0.02) {
+      setActiveLink(sectionIds.indexOf(bestId));
+    } else {
+      navLinks.forEach(l => l.classList.remove('active'));
+    }
   }, { threshold: [0, 0.1, 0.2, 0.4, 0.6, 0.8, 1] });
 
   sections.forEach(s => activeObserver.observe(s));
