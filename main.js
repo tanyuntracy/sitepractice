@@ -214,12 +214,37 @@ window.addEventListener('keydown', onSnapKey);
 
   let naturalW = 0;
 
+  const graphicEntries = [];
+  targets.forEach(hero => {
+    const graphic = hero.querySelector('.hero-graphic');
+    if (graphic) graphicEntries.push({ hero, graphic });
+  });
+
+  function lockGraphicSizes() {
+    graphicEntries.forEach(({ hero, graphic }) => {
+      hero.style.removeProperty('width');
+      hero.style.removeProperty('max-width');
+      hero.style.removeProperty('margin-left');
+      graphic.style.removeProperty('width');
+      graphic.style.removeProperty('height');
+    });
+    const sizes = graphicEntries.map(({ graphic }) => {
+      const r = graphic.getBoundingClientRect();
+      return { w: r.width, h: r.height };
+    });
+    graphicEntries.forEach(({ graphic }, i) => {
+      graphic.style.width = sizes[i].w + 'px';
+      graphic.style.height = sizes[i].h + 'px';
+    });
+  }
+
   function measureNatural() {
     const pad = parseFloat(getComputedStyle(wrap).paddingLeft) || 0;
     naturalW = wrap.clientWidth - pad * 2;
     targets.forEach(hero => {
       hero.style.setProperty('--hero-natural-w', naturalW + 'px');
     });
+    lockGraphicSizes();
   }
 
   function update() {
