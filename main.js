@@ -204,23 +204,62 @@ window.addEventListener('keydown', onSnapKey);
 
 // Scroll-driven hero full-bleed expansion (first hero per section)
 (function initHeroBleed() {
+  const wrap = document.querySelector('.content-wrap');
   const targets = [];
   document.querySelectorAll('.case-study').forEach(section => {
     const hero = section.querySelector('.hero');
     if (hero) targets.push(hero);
   });
-  if (!targets.length) return;
+  if (!wrap || !targets.length) return;
 
-  const FULL = 'width: 100vw !important; max-width: none !important; margin-left: calc(50% - 50vw) !important;';
+  let naturalW = 0;
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      const on = entry.intersectionRatio > 0.8;
-      entry.target.style.cssText = on ? FULL : '';
+  function measureNatural() {
+    const pad = parseFloat(getComputedStyle(wrap).paddingLeft) || 0;
+    naturalW = wrap.clientWidth - pad * 2;
+  }
+
+  function update() {
+    const viewH = window.innerHeight;
+    const viewW = document.documentElement.clientWidth;
+    const extraMax = viewW - naturalW;
+    if (extraMax <= 0) return;
+
+    targets.forEach(hero => {
+      const rect = hero.getBoundingClientRect();
+
+      if (rect.bottom <= 0 || rect.top >= viewH) {
+        if (hero.style.cssText) hero.style.cssText = '';
+        return;
+      }
+
+      const heroThird = rect.top + rect.height / 3;
+      const raw = 2 * (viewH - heroThird) / viewH;
+      const clamped = Math.max(0, Math.min(1, raw));
+      const progress = clamped * clamped * (3 - 2 * clamped);
+
+      if (progress < 0.005) {
+        if (hero.style.cssText) hero.style.cssText = '';
+        return;
+      }
+
+      const extra = extraMax * progress;
+      hero.style.cssText = `width: ${naturalW + extra}px !important; max-width: none !important; margin-left: ${-extra / 2}px !important;`;
     });
-  }, { threshold: [0, 0.2, 0.5, 0.8, 1] });
+  }
 
-  targets.forEach(hero => observer.observe(hero));
+  measureNatural();
+
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(() => { update(); ticking = false; });
+      ticking = true;
+    }
+  }, { passive: true });
+
+  window.addEventListener('resize', () => { measureNatural(); update(); });
+  update();
 })();
 
 const stickyNav = document.querySelector('.sticky-nav');
