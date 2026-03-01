@@ -1,5 +1,18 @@
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-window.scrollTo(0, 0);
+
+const initialHash = window.location.hash;
+if (initialHash) {
+  const target = document.querySelector(initialHash);
+  if (target) {
+    requestAnimationFrame(() => {
+      target.scrollIntoView({ behavior: 'auto' });
+    });
+  } else {
+    window.scrollTo(0, 0);
+  }
+} else {
+  window.scrollTo(0, 0);
+}
 
 const scrollObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
@@ -144,9 +157,8 @@ window.addEventListener('load', () => {
   });
 });
 
-// One-time snap: intercept first downward scroll in title area and snap to section 1
 const snapTarget = document.querySelector('#section-1 .section-header');
-let hasSnapped = false;
+let hasSnapped = !!initialHash && initialHash !== '#title';
 let touchStartY = 0;
 
 function doSnap() {
@@ -199,9 +211,12 @@ window.addEventListener('keydown', onSnapKey);
   });
   if (!targets.length) return;
 
+  const FULL = 'width: 100vw !important; max-width: none !important; margin-left: calc(50% - 50vw) !important;';
+
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      entry.target.classList.toggle('is-full-bleed', entry.intersectionRatio > 0.8);
+      const on = entry.intersectionRatio > 0.8;
+      entry.target.style.cssText = on ? FULL : '';
     });
   }, { threshold: [0, 0.2, 0.5, 0.8, 1] });
 
@@ -212,23 +227,50 @@ const stickyNav = document.querySelector('.sticky-nav');
 const section1 = document.querySelector('#section-1');
 
 if (stickyNav && section1) {
-  stickyNav.classList.remove('expanded');
-  stickyNav.classList.remove('nav-ready');
+  const navLinksEl = stickyNav.querySelector('.nav-links');
+  const navCardEl = stickyNav.querySelector('.nav-card');
+  const navSides = stickyNav.querySelectorAll('.nav-side');
+
+  function applyNavState(expanded) {
+    if (expanded) {
+      stickyNav.classList.add('expanded');
+      navLinksEl.style.cssText = '';
+      navCardEl.style.cssText = '';
+      navSides.forEach(s => { s.style.cssText = ''; });
+    } else {
+      stickyNav.classList.remove('expanded');
+      navLinksEl.style.setProperty('max-width', '0', 'important');
+      navLinksEl.style.setProperty('opacity', '0', 'important');
+      navCardEl.style.setProperty('flex-grow', '0', 'important');
+      navSides.forEach(s => {
+        s.style.setProperty('opacity', '', '');
+        s.style.setProperty('max-width', '', '');
+      });
+    }
+  }
+
+  applyNavState(false);
 
   let navTicking = false;
+  let navReady = false;
 
   function updateNav() {
     if (section1.offsetTop < 200) return;
-    if (window.scrollY > section1.offsetTop - 100) {
-      stickyNav.classList.add('expanded');
-    } else {
-      stickyNav.classList.remove('expanded');
+    const expanded = window.scrollY > section1.offsetTop - 100;
+    applyNavState(expanded);
+    if (navReady) {
+      navLinksEl.style.cssText = '';
+      navCardEl.style.cssText = '';
+      navSides.forEach(s => { s.style.cssText = ''; });
     }
   }
 
   function initNav() {
     updateNav();
-    requestAnimationFrame(() => stickyNav.classList.add('nav-ready'));
+    navReady = true;
+    navLinksEl.style.cssText = '';
+    navCardEl.style.cssText = '';
+    navSides.forEach(s => { s.style.cssText = ''; });
   }
 
   if (document.readyState === 'complete') {
@@ -247,24 +289,60 @@ if (stickyNav && section1) {
 
 const navLinks = document.querySelectorAll('.nav-link');
 const sections = document.querySelectorAll('.case-study');
+const sectionIds = ['section-1', 'section-2', 'section-3', 'section-4'];
+let clickLock = false;
+let lastHash = window.location.hash;
+
+function setActiveLink(idx) {
+  navLinks.forEach(l => l.classList.remove('active'));
+  if (idx >= 0 && idx < navLinks.length) navLinks[idx].classList.add('active');
+}
+
+function updateHash(hash) {
+  if (hash === lastHash) return;
+  lastHash = hash;
+  history.replaceState(null, '', hash || (window.location.pathname + window.location.search));
+}
+
+navLinks.forEach((link, i) => {
+  link.addEventListener('click', () => {
+    clickLock = true;
+    setActiveLink(i);
+    lastHash = '#' + sectionIds[i];
+    setTimeout(() => { clickLock = false; }, 800);
+  });
+});
+
+let hashTicking = false;
+window.addEventListener('scroll', () => {
+  if (hashTicking || clickLock) return;
+  hashTicking = true;
+  requestAnimationFrame(() => {
+    hashTicking = false;
+    const scrollY = window.scrollY;
+    const offset = 120;
+    let currentId = null;
+
+    for (let i = sections.length - 1; i >= 0; i--) {
+      const s = sections[i];
+      if (s.offsetTop - offset <= scrollY) {
+        currentId = s.id;
+        break;
+      }
+    }
+
+    if (currentId) {
+      updateHash('#' + currentId);
+      setActiveLink(sectionIds.indexOf(currentId));
+    } else {
+      updateHash('');
+      navLinks.forEach(l => l.classList.remove('active'));
+    }
+  });
+}, { passive: true });
 
 if (navLinks.length && sections.length) {
-  const sectionIds = ['section-1', 'section-2', 'section-3', 'section-4'];
   const visibilityMap = new Map();
-  let clickLock = false;
-
-  function setActiveLink(idx) {
-    navLinks.forEach(l => l.classList.remove('active'));
-    if (idx >= 0 && idx < navLinks.length) navLinks[idx].classList.add('active');
-  }
-
-  navLinks.forEach((link, i) => {
-    link.addEventListener('click', () => {
-      clickLock = true;
-      setActiveLink(i);
-      setTimeout(() => { clickLock = false; }, 800);
-    });
-  });
 
   const activeObserver = new IntersectionObserver((entries) => {
     if (clickLock) return;
