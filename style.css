@@ -330,18 +330,17 @@ video.hero-bg {
   left: 50%;
   transform: translateX(-50%);
   width: 100%;
-  max-width: var(--max-w);
   height: 60px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 var(--pad) 16px;
+  padding: 0 24px 24px;
   z-index: 50;
   pointer-events: none;
 }
 .sticky-nav > * { pointer-events: auto; }
 .nav-side {
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.4;
   letter-spacing: 0.14px;
   color: var(--color-text-sub);
@@ -359,7 +358,7 @@ video.hero-bg {
 .nav-right {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 8px;
 }
 .scroll-icon {
   position: relative;
@@ -427,7 +426,7 @@ video.hero-bg {
               opacity 0.3s ease;
 }
 .nav-link {
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.4;
   letter-spacing: 0.14px;
   text-align: center;
@@ -465,7 +464,7 @@ video.hero-bg {
   height: 36px;
   min-width: 92px;
   padding: 8px 16px;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.4;
   letter-spacing: 0.14px;
   text-decoration: none;
@@ -480,12 +479,19 @@ video.hero-bg {
 }
 .sticky-nav.expanded .nav-card {
   flex-grow: 1;
+  padding-left: 32px;
+  padding-right: 32px;
 }
 .sticky-nav.expanded .nav-links {
   max-width: 500px;
   opacity: 1;
   transition: max-width 0.5s cubic-bezier(0.16, 1, 0.3, 1),
               opacity 0.4s ease 0.15s;
+}
+.sticky-nav.at-end .nav-side {
+  opacity: 0;
+  max-width: 0;
+  pointer-events: none;
 }
 
 [data-parallax-depth] {
@@ -603,12 +609,16 @@ video.hero-bg {
   .content-card img,
   .content-card video { width: calc(100% - 80px); height: auto; }
   .sticky-nav {
-    max-width: none;
     padding: 0 8px 32px;
   }
+  .sticky-nav.expanded .nav-side { display: none; }
+  .sticky-nav.expanded .nav-links { display: none !important; }
+  .sticky-nav.expanded .nav-card { flex-grow: 1 !important; }
+  .sticky-nav.at-end .nav-side { display: none; }
+  .sticky-nav.at-end .nav-card { flex-grow: 1 !important; }
   .nav-side { display: none; }
   .nav-links { display: none; }
-  .nav-card { flex-grow: 1; }
+  .nav-card { flex-grow: 1; padding: 16px !important; }
 }
 
 @media (min-width: 768px) and (max-width: 1279px) {

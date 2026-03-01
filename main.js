@@ -300,13 +300,25 @@ window.addEventListener('keydown', onSnapKey);
 
 const stickyNav = document.querySelector('.sticky-nav');
 const section1 = document.querySelector('#section-1');
+const endSection = document.querySelector('.end-section');
 
 if (stickyNav && section1) {
   const navLinksEl = stickyNav.querySelector('.nav-links');
   const navCardEl = stickyNav.querySelector('.nav-card');
   const navSides = stickyNav.querySelectorAll('.nav-side');
 
-  function applyNavState(expanded) {
+  function applyNavState(expanded, atEnd) {
+    stickyNav.classList.toggle('at-end', !!atEnd);
+
+    if (atEnd) {
+      stickyNav.classList.remove('expanded');
+      navLinksEl.style.setProperty('max-width', '0', 'important');
+      navLinksEl.style.setProperty('opacity', '0', 'important');
+      navCardEl.style.setProperty('flex-grow', '0', 'important');
+      navSides.forEach(s => { s.style.cssText = ''; });
+      return;
+    }
+
     if (expanded) {
       stickyNav.classList.add('expanded');
       navLinksEl.style.cssText = '';
@@ -324,19 +336,23 @@ if (stickyNav && section1) {
     }
   }
 
-  applyNavState(false);
+  applyNavState(false, false);
 
   let navTicking = false;
   let navReady = false;
 
   function updateNav() {
     if (section1.offsetTop < 200) return;
-    const expanded = window.scrollY > section1.offsetTop - 100;
-    applyNavState(expanded);
+    const isMobile = window.innerWidth < 768;
+    const atEnd = !isMobile && endSection && window.scrollY > endSection.offsetTop - window.innerHeight * 0.5;
+    const expanded = !atEnd && window.scrollY > section1.offsetTop - 100;
+    applyNavState(expanded, atEnd);
     if (navReady) {
-      navLinksEl.style.cssText = '';
-      navCardEl.style.cssText = '';
-      navSides.forEach(s => { s.style.cssText = ''; });
+      if (!atEnd) {
+        navLinksEl.style.cssText = '';
+        navCardEl.style.cssText = '';
+        navSides.forEach(s => { s.style.cssText = ''; });
+      }
     }
   }
 
