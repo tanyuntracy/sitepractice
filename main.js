@@ -15,6 +15,8 @@ function ensureMuted(video) {
   video.setAttribute('muted', '');
   video.setAttribute('playsinline', '');
   video.defaultMuted = true;
+  video.loop = false;
+  video.removeAttribute('loop');
 }
 
 function tryPlay(video) {
@@ -71,10 +73,11 @@ const playbackObserver = new IntersectionObserver((entries) => {
     if (entry.isIntersecting) {
       if (!video.dataset.loaded) {
         loadVideoSources(video);
-      } else if (video.paused) {
+      } else {
+        video.currentTime = 0;
         tryPlay(video);
       }
-    } else if (video.dataset.loaded && !video.paused) {
+    } else if (video.dataset.loaded) {
       video.pause();
     }
   });
@@ -100,10 +103,13 @@ function retryStalledVideos() {
 ['click', 'touchstart', 'scroll'].forEach(evt => {
   document.addEventListener(evt, () => {
     document.querySelectorAll('.lazy-video').forEach(video => {
-      if (video.dataset.loaded && video.paused) {
+      if (video.dataset.loaded && (video.paused || video.ended)) {
         const rect = video.getBoundingClientRect();
         const inView = rect.top < window.innerHeight + 200 && rect.bottom > -200;
-        if (inView) tryPlay(video);
+        if (inView) {
+          video.currentTime = 0;
+          tryPlay(video);
+        }
       }
     });
     retryStalledVideos();
