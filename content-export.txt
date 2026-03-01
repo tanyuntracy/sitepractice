@@ -10,7 +10,7 @@ Meta description: Design portfolio by Tracy Tan
 INTRO / TITLE AREA
 -------------------
 For Intercom
-Scroll to see complex system design across brands, platforms, with AI-enabled workflows.
+Scroll to see complex system design across brands and platforms for human and machines.
 
 
 ================================================================================
@@ -27,17 +27,17 @@ What I did: Product language direction, Design system strategy
 Working with: Design system designers, Content designer, Motion designer
 
 Summary:
-Three brands were consolidating into one system, but the foundations were bloated. I defined the multi-brand design strategy and am currently rebuilding the architecture to support 300+ designers across consumer, merchant, and courier products, with a scalable, machine-readable foundation.
+Currently leading the consolidation of three brands into a single, scalable design system. This involves defining the multi-brand strategy, rebuilding the architecture to support 300+ designers across consumer, merchant, and courier products in 3 companies, and creating outputs that are both human-friendly and machine-readable.
 
 Detail Block 1:
-I defined the creative primitives and led the visual, motion, and content systems work under one cohesive framework, scaling across three brands and product pillars.
+I defined the creative primitives and led the visual, motion, and content systems work within a unified, scalable framework, scaling across three brands and product pillars.
 
 Note: Ongoing work, the images are examples to showcase the scope.
 
 Card labels: Visual design, Motion design, Content design
 
 Detail Block 2:
-I defined the system architecture and structured outputs, validating the workflow through building proof of concept hands-on. The goal: readable by humans, executable by machines.
+I defined the system architecture and structured outputs, validated the architecture with hands-on proof-of-concept builds. The goal: readable by humans, executable by machines.
 
 Note: Ongoing work, the images are examples to showcase the scope.
 
@@ -72,7 +72,7 @@ Gallery Cards:
   11% of our merchants operate with their own drivers and are actively looking for logistics solutions.
 
 Detail Block 1:
-Led discovery across complex manual workflows, identified core operational gaps, and translated them into product experiences.
+Led discovery across complex manual workflows, identified core operational gaps, and transformed operational gaps into clear and actionable user-centered product experiences.
 
 Card labels: Before, After
 
@@ -104,7 +104,7 @@ Defined where and how intelligence surfaces across the agent journey.
 Card labels: Investigate, Communicate, Resolution
 
 Detail Block 2:
-Replatformed the tooling with a scalable architecture, integrated intelligence layers, clarified navigation, and prioritized information density through rigorous trade-offs.
+Replatformed the tooling with a scalable architecture, integrated intelligence layers, redesigned navigation and information hierarchy, making complex data actionable without overwhelming users.
 
 Card labels: Before, After
 
@@ -172,7 +172,7 @@ Redefined the business and product strategic direction from delivery-only to a m
 NAVIGATION & UI LABELS
 ================================================================================
 
-Nav: Tracy Tan | Project 1 | Project 2 | Project 3 | View more
+Nav: Tracy Tan | Project 1 | Project 2 | Project 3 | More Projects
 CTA: Let's talk (mailto:tan.yun.tracy@gmail.com)
 Left label: Confidential
 Right label: Scroll
