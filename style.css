@@ -667,6 +667,7 @@ video.hero-bg {
   }
 
   .info-block { flex-direction: column; gap: var(--gap-header); margin-bottom: var(--gap-header); }
+  .info-meta { width: 100%; }
   .info-body { order: -1; }
 
   .hero-section + .detail,
