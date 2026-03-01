@@ -150,6 +150,14 @@ main.content-wrap {
 .case-study {
   scroll-margin-top: 64px;
 }
+.case-study > :first-child {
+  margin-top: var(--gap-header);
+}
+
+.hero.animate-on-scroll.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
 
 .section-header {
   display: flex;
