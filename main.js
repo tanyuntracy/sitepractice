@@ -214,27 +214,27 @@ window.addEventListener('keydown', onSnapKey);
 
   let naturalW = 0;
 
-  const graphicEntries = [];
+  const wrapEntries = [];
   targets.forEach(hero => {
-    const graphic = hero.querySelector('.hero-graphic');
-    if (graphic) graphicEntries.push({ hero, graphic });
+    const gw = hero.querySelector('.hero-graphic-wrap');
+    if (gw) wrapEntries.push({ hero, gw });
   });
 
   function lockGraphicSizes() {
-    graphicEntries.forEach(({ hero, graphic }) => {
+    wrapEntries.forEach(({ hero, gw }) => {
       hero.style.removeProperty('width');
       hero.style.removeProperty('max-width');
       hero.style.removeProperty('margin-left');
-      graphic.style.removeProperty('width');
-      graphic.style.removeProperty('height');
+      gw.style.removeProperty('max-width');
+      gw.style.removeProperty('max-height');
     });
-    const sizes = graphicEntries.map(({ graphic }) => {
-      const r = graphic.getBoundingClientRect();
+    const sizes = wrapEntries.map(({ gw }) => {
+      const r = gw.getBoundingClientRect();
       return { w: r.width, h: r.height };
     });
-    graphicEntries.forEach(({ graphic }, i) => {
-      graphic.style.width = sizes[i].w + 'px';
-      graphic.style.height = sizes[i].h + 'px';
+    wrapEntries.forEach(({ gw }, i) => {
+      gw.style.maxWidth = sizes[i].w + 'px';
+      gw.style.maxHeight = sizes[i].h + 'px';
     });
   }
 
