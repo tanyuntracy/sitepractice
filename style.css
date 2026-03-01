@@ -114,8 +114,34 @@ video.hero-bg {
 .hero:has(video.hero-bg) {
   aspect-ratio: unset;
 }
+.hero--split:has(video.hero-bg) {
+  aspect-ratio: 1240 / 500;
+}
+.hero--split video.hero-bg {
+  position: absolute;
+  height: 100%;
+  object-fit: cover;
+}
 .hero-overlay {
   position: absolute;
+}
+
+.hero-graphic-wrap {
+  position: absolute;
+  inset: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.hero-graphic {
+  display: block;
+  max-width: var(--hero-natural-w, 100%);
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  pointer-events: auto;
 }
 
 .info-block {

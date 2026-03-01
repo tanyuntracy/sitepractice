@@ -217,6 +217,9 @@ window.addEventListener('keydown', onSnapKey);
   function measureNatural() {
     const pad = parseFloat(getComputedStyle(wrap).paddingLeft) || 0;
     naturalW = wrap.clientWidth - pad * 2;
+    targets.forEach(hero => {
+      hero.style.setProperty('--hero-natural-w', naturalW + 'px');
+    });
   }
 
   function update() {
@@ -229,7 +232,9 @@ window.addEventListener('keydown', onSnapKey);
       const rect = hero.getBoundingClientRect();
 
       if (rect.bottom <= 0 || rect.top >= viewH) {
-        if (hero.style.cssText) hero.style.cssText = '';
+        hero.style.removeProperty('width');
+        hero.style.removeProperty('max-width');
+        hero.style.removeProperty('margin-left');
         return;
       }
 
@@ -238,12 +243,16 @@ window.addEventListener('keydown', onSnapKey);
       const progress = clamped * clamped * (3 - 2 * clamped);
 
       if (progress < 0.005) {
-        if (hero.style.cssText) hero.style.cssText = '';
+        hero.style.removeProperty('width');
+        hero.style.removeProperty('max-width');
+        hero.style.removeProperty('margin-left');
         return;
       }
 
       const extra = extraMax * progress;
-      hero.style.cssText = `width: ${naturalW + extra}px !important; max-width: none !important; margin-left: ${-extra / 2}px !important;`;
+      hero.style.setProperty('width', (naturalW + extra) + 'px', 'important');
+      hero.style.setProperty('max-width', 'none', 'important');
+      hero.style.setProperty('margin-left', (-extra / 2) + 'px', 'important');
     });
   }
 
