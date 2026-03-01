@@ -1,38 +1,9 @@
-/* ── Password gate ── */
-const SITE_PASSWORD = 'tracy&intercom';
+/* ── Password gate (temporarily disabled) ── */
+// const SITE_PASSWORD = 'tracy&intercom';
 
 (function initPasswordGate() {
   const gate = document.getElementById('passwordGate');
-  const form = document.getElementById('passwordForm');
-  const input = document.getElementById('passwordInput');
-  const error = document.getElementById('passwordError');
-
-  if (!gate || !form) return;
-
-  if (sessionStorage.getItem('site_auth') === '1') {
-    gate.classList.add('hidden');
-    return;
-  }
-
-  document.body.classList.add('gate-locked');
-
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    if (input.value === SITE_PASSWORD) {
-      sessionStorage.setItem('site_auth', '1');
-      document.body.classList.remove('gate-locked');
-      gate.classList.add('hidden');
-      startTitleAnimation();
-    } else {
-      error.classList.add('visible');
-      form.classList.remove('shake');
-      form.classList.add('error');
-      void form.offsetWidth;
-      form.classList.add('shake');
-      input.value = '';
-      input.focus();
-    }
-  });
+  if (gate) gate.classList.add('hidden');
 })();
 
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
@@ -232,9 +203,7 @@ function startTitleAnimation() {
 }
 
 window.addEventListener('load', () => {
-  if (sessionStorage.getItem('site_auth') === '1') {
-    startTitleAnimation();
-  }
+  startTitleAnimation();
 });
 
 const snapTarget = document.querySelector('#section-1 .section-header');
