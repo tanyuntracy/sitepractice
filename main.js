@@ -439,6 +439,10 @@ if (navLinks.length && sections.length) {
   sections.forEach(s => activeObserver.observe(s));
 }
 
+document.querySelectorAll('.collage-img').forEach(img => {
+  img.addEventListener('error', () => { img.style.display = 'none'; }, { once: true });
+});
+
 (function initCursorParallax() {
   const zones = document.querySelectorAll('.cursor-parallax-zone');
   if (!zones.length || window.matchMedia('(pointer: coarse)').matches) return;

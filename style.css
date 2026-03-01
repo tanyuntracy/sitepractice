@@ -401,8 +401,8 @@ video.hero-bg {
 }
 @keyframes chevron-scroll {
   0% { --p-scroll: -1; animation-timing-function: cubic-bezier(0.36, 0, 0.28, 1.14); }
-  30% { --p-scroll: 0; animation-timing-function: linear; }
-  70% { --p-scroll: 0; animation-timing-function: cubic-bezier(0.36, 0, 0.28, 1.14); }
+  42% { --p-scroll: 0; animation-timing-function: linear; }
+  58% { --p-scroll: 0; animation-timing-function: cubic-bezier(0.36, 0, 0.28, 1.14); }
   100% { --p-scroll: 1; }
 }
 .nav-card {
@@ -495,6 +495,49 @@ video.hero-bg {
   will-change: translate;
 }
 
+.cursor-parallax-zone {
+  position: relative;
+}
+.cursor-parallax-zone .page-title,
+.cursor-parallax-zone .section-4-title {
+  z-index: 2;
+}
+
+.parallax-collage {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 100vw;
+  height: 100%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.collage-img {
+  position: absolute;
+  display: block;
+  height: auto;
+  object-fit: cover;
+  border: 0;
+}
+
+.collage-1  { top: 12%; left: 14%; width: 7%; }
+.collage-2  { top: 4%;  left: 33%; width: 5.5%; }
+.collage-3  { top: 1%;  left: 44%; width: 8.5%; }
+.collage-4  { top: 4%;  right: 19%; width: 3.5%; }
+.collage-5  { top: 20%; left: 8%;  width: 21%; }
+.collage-6  { top: 8%;  left: 36%; width: 28%; z-index: 3; }
+.collage-7  { top: 24%; right: 13%; width: 11%; }
+.collage-8  { top: 44%; left: 5%;  width: 4%; }
+.collage-9  { top: 35%; left: 2%;  width: 19%; }
+.collage-10 { top: 48%; left: 14%; width: 11%; z-index: 3; }
+.collage-11 { top: 42%; right: 9%; width: 13%; }
+.collage-12 { top: 58%; left: 32%; width: 24%; z-index: 3; }
+.collage-13 { top: 80%; left: 26%; width: 7.5%; }
+.collage-14 { top: 78%; left: 40%; width: 9%; }
+.collage-15 { top: 68%; right: 18%; width: 3.5%; }
+
 .animate-on-scroll {
   opacity: 0;
   transform: translateY(24px);
@@ -536,6 +579,7 @@ video.hero-bg {
 
 @media (max-width: 767px) {
   :root { --pad: 16px; }
+  .parallax-collage { display: none; }
 
   .info-block { flex-direction: column; gap: 32px; }
   .info-body { order: -1; }
