@@ -39,17 +39,10 @@ if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
 const initialHash = window.location.hash;
 if (initialHash) {
-  const target = document.querySelector(initialHash);
-  if (target) {
-    requestAnimationFrame(() => {
-      target.scrollIntoView({ behavior: 'auto' });
-    });
-  } else {
-    window.scrollTo(0, 0);
-  }
-} else {
-  window.scrollTo(0, 0);
+  history.replaceState(null, '', window.location.pathname + window.location.search);
 }
+window.scrollTo(0, 0);
+requestAnimationFrame(() => window.scrollTo(0, 0));
 
 const scrollObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
