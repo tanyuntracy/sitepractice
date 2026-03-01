@@ -22,6 +22,7 @@ const SITE_PASSWORD = 'tracy&intercom';
       sessionStorage.setItem('site_auth', '1');
       document.body.classList.remove('gate-locked');
       gate.classList.add('hidden');
+      startTitleAnimation();
     } else {
       error.classList.add('visible');
       form.classList.remove('shake');
@@ -212,12 +213,12 @@ document.addEventListener('visibilitychange', () => {
   });
 });
 
-window.addEventListener('load', () => {
-  const blurTitles = document.querySelectorAll('.blur-in');
+function startTitleAnimation() {
+  const blurTitles = document.querySelectorAll('.title-area > .blur-in');
   const first = blurTitles[0];
   const second = blurTitles[1];
 
-  if (!first) return;
+  if (!first || first.classList.contains('visible')) return;
 
   first.classList.add('visible');
 
@@ -235,6 +236,12 @@ window.addEventListener('load', () => {
       });
     }, 600);
   });
+}
+
+window.addEventListener('load', () => {
+  if (sessionStorage.getItem('site_auth') === '1') {
+    startTitleAnimation();
+  }
 });
 
 const snapTarget = document.querySelector('#section-1 .section-header');
