@@ -420,7 +420,7 @@ if (stickyNav && section1) {
 
   function updateNav() {
     if (section1.offsetTop < 200) return;
-    const isMobile = window.innerWidth < 768;
+    const isMobile = window.innerWidth < 1280;
     const atEnd = !isMobile && endSection && window.scrollY > endSection.offsetTop - window.innerHeight * 0.5;
     const expanded = !atEnd && window.scrollY > section1.offsetTop - 100;
     applyNavState(expanded, atEnd);
