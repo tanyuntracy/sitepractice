@@ -438,3 +438,63 @@ if (navLinks.length && sections.length) {
 
   sections.forEach(s => activeObserver.observe(s));
 }
+
+document.querySelectorAll('.collage-img').forEach(img => {
+  img.addEventListener('error', () => { img.style.display = 'none'; }, { once: true });
+});
+
+(function initCursorParallax() {
+  const zones = document.querySelectorAll('.cursor-parallax-zone');
+  if (!zones.length || window.matchMedia('(pointer: coarse)').matches) return;
+
+  const mouse = { x: 0.5, y: 0.5 };
+  const current = { x: 0.5, y: 0.5 };
+  const EASE = 0.06;
+  const MAX_SHIFT = 25;
+  const activeZones = new Set();
+  let rafId = null;
+
+  window.addEventListener('mousemove', (e) => {
+    mouse.x = e.clientX / window.innerWidth;
+    mouse.y = e.clientY / window.innerHeight;
+  }, { passive: true });
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        activeZones.add(entry.target);
+        if (!rafId) tick();
+      } else {
+        activeZones.delete(entry.target);
+        entry.target.querySelectorAll('[data-parallax-depth]').forEach(el => {
+          el.style.removeProperty('--parallax-x');
+          el.style.removeProperty('--parallax-y');
+        });
+        if (!activeZones.size && rafId) {
+          cancelAnimationFrame(rafId);
+          rafId = null;
+        }
+      }
+    });
+  }, { threshold: 0.05 });
+
+  zones.forEach(z => observer.observe(z));
+
+  function tick() {
+    current.x += (mouse.x - current.x) * EASE;
+    current.y += (mouse.y - current.y) * EASE;
+
+    const ox = (current.x - 0.5) * 2;
+    const oy = (current.y - 0.5) * 2;
+
+    activeZones.forEach(zone => {
+      zone.querySelectorAll('[data-parallax-depth]').forEach(el => {
+        const d = parseFloat(el.dataset.parallaxDepth) || 0;
+        el.style.setProperty('--parallax-x', (ox * d * MAX_SHIFT) + 'px');
+        el.style.setProperty('--parallax-y', (oy * d * MAX_SHIFT) + 'px');
+      });
+    });
+
+    rafId = requestAnimationFrame(tick);
+  }
+})();
