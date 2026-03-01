@@ -206,7 +206,7 @@ window.addEventListener('keydown', onSnapKey);
 (function initHeroBleed() {
   const wrap = document.querySelector('.content-wrap');
   const targets = [];
-  document.querySelectorAll('.case-study').forEach(section => {
+  document.querySelectorAll('.case-study:not(#section-4)').forEach(section => {
     const hero = section.querySelector('.hero');
     if (hero) targets.push(hero);
   });
