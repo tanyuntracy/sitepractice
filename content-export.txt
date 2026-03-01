@@ -1,0 +1,179 @@
+TRACY TAN — PORTFOLIO SITE CONTENT EXPORT
+==========================================
+
+PAGE TITLE & META
+-----------------
+Title: Tracy Tan & Intercom
+Meta description: Design portfolio by Tracy Tan
+
+
+INTRO / TITLE AREA
+-------------------
+For Intercom
+Scroll to see complex system design across brands, platforms, with AI-enabled workflows.
+
+
+================================================================================
+CASE STUDY 1: Design System
+================================================================================
+
+Tags: Work in progress · Design system · Creative direction · AI workflow
+
+Title: One system across three brands, built for humans and machines
+
+Time: 2026, ongoing
+Role: Principal designer
+What I did: Product language direction, Design system strategy
+Working with: Design system designers, Content designer, Motion designer
+
+Summary:
+Three brands were consolidating into one system, but the foundations were bloated. I defined the multi-brand design strategy and am currently rebuilding the architecture to support 300+ designers across consumer, merchant, and courier products, with a scalable, machine-readable foundation.
+
+Detail Block 1:
+I defined the creative primitives and led the visual, motion, and content systems work under one cohesive framework, scaling across three brands and product pillars.
+
+Note: Ongoing work, the images are examples to showcase the scope.
+
+Card labels: Visual design, Motion design, Content design
+
+Detail Block 2:
+I defined the system architecture and structured outputs, validating the workflow through building proof of concept hands-on. The goal: readable by humans, executable by machines.
+
+Note: Ongoing work, the images are examples to showcase the scope.
+
+Card labels: For human, For machine
+
+
+================================================================================
+CASE STUDY 2: Logistics Product
+================================================================================
+
+Tags: 0 to 1 product · Complex tooling · New business idea
+
+Title: Productizing internal logistics infrastructure
+
+Time: 2024, 4 months
+Role: Design lead
+What I did: Product strategy & vision, Design direction
+Worked with: Junior designer
+
+Summary:
+Internal logistics workflow was fragmented and under-leveraged. I identified the opportunity to productize the infrastructure, led a multi-platform strategy, and launched a new business line that onboarded 200+ companies in its first year.
+
+Gallery Cards:
+
+  Card 1 — One global operation
+  Standardize and remove overhead for 10,000+ operators across 40 countries to reduce costs.
+
+  Card 2 — Strengthen third-party delivery
+  Improve visibility and reliability across 400 delivery companies handling 30% of orders and integrating emerging technologies.
+
+  Card 3 — New revenue line
+  11% of our merchants operate with their own drivers and are actively looking for logistics solutions.
+
+Detail Block 1:
+Led discovery across complex manual workflows, identified core operational gaps, and translated them into product experiences.
+
+Card labels: Before, After
+
+Detail Block 2:
+Simplified dense operational data through structured information architecture and progressive data visualization.
+
+Card labels: Plan, Track, Report
+
+
+================================================================================
+CASE STUDY 3: Agent Tooling
+================================================================================
+
+Tags: Complex tooling · Customer support product · AI-human collaboration · In development
+
+Title: Replatforming agent tooling for human-led, AI-assisted support
+
+Time: 2025, 6 months
+Role: Senior design lead
+What I did: Product strategy, Leadership coaching
+Worked with: Design lead, Product designers
+
+Summary:
+I led the team to define a human-led, AI-assisted operating model that balanced speed, quality, and cost. We redesigned the tooling to integrate intelligence directly into the agent workflow.
+
+Detail Block 1:
+Defined where and how intelligence surfaces across the agent journey.
+
+Card labels: Investigate, Communicate, Resolution
+
+Detail Block 2:
+Replatformed the tooling with a scalable architecture, integrated intelligence layers, clarified navigation, and prioritized information density through rigorous trade-offs.
+
+Card labels: Before, After
+
+
+================================================================================
+SECTION 4 INTRO
+================================================================================
+
+Looking for more?
+
+
+================================================================================
+PROJECT 4A: Banking Overview
+================================================================================
+
+Time: 2021
+Role: Lead designer
+What I did: End-to-end design
+Worked with: Product designer
+
+Summary:
+Designed a new banking overview experience that unlocked portfolio growth, resulting in +394% product conversion and +65% engagement.
+
+
+================================================================================
+PROJECT 4B: Product Language
+================================================================================
+
+Time: 2021
+Role: Lead designer
+What I did: Product language direction, Design system
+Worked with: Design system designers
+
+Summary:
+Defined and launched a new product art direction and design language end-to-end across 100+ designers, driving +2.51 p.p. payment conversion, 3.1M DAU, and +41% YoY growth.
+
+
+================================================================================
+PROJECT 4C: Crewmate AI Concept
+================================================================================
+
+Time: 2025, 3 weeks
+Role: Lead designer
+What I did: Product architecture, Storyboard and narrative
+Worked with: Motion designer, Visual designer
+
+Summary:
+Defined the architecture, interaction paradigm, and narrative storyboard for "Crewmate," a trust-led AI concept for SMBs. The work influenced the merchant tooling roadmap.
+
+
+================================================================================
+PROJECT 4D: Multi-task Platform
+================================================================================
+
+Time: 2024
+Role: Design lead
+What I did: Product strategy and vision, Product design direction, Main driver from concept to launch
+Worked with: Multidisciplinary design team
+
+Summary:
+Redefined the business and product strategic direction from delivery-only to a multi-task platform that defined the short- and long-term roadmap of the product. Set the experience vision in visual, motion, tone, behavioral mechanics in the gaming direction grounded in customer insights that led to improved CSAT and efficiency.
+
+
+================================================================================
+NAVIGATION & UI LABELS
+================================================================================
+
+Nav: Tracy Tan | Project 1 | Project 2 | Project 3 | View more
+CTA: Let's talk (mailto:tan.yun.tracy@gmail.com)
+Left label: Confidential
+Right label: Scroll
+End screen: End.
