@@ -270,11 +270,19 @@ video.hero-bg {
   object-fit: contain;
 }
 
-#section-3 > .detail:first-of-type .content-card:nth-child(2) video {
+#section-3 .content-card:nth-child(3) video {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+#section-3 > :nth-child(2) .content-card:nth-child(2) video {
+  top: 8.33%;
+  right: 4.04%;
   width: auto;
+  max-width: 62.97%;
   height: calc(100% - 8.33%);
-  object-fit: contain;
   border: 2px solid #151725;
+  border-radius: 12px;
 }
 
 .sidebar-content {
