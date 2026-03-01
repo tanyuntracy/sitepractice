@@ -204,18 +204,34 @@ const sections = document.querySelectorAll('.case-study');
 
 if (navLinks.length && sections.length) {
   const sectionIds = ['section-1', 'section-2', 'section-3', 'section-4'];
+  const visibilityMap = new Map();
+  let clickLock = false;
+
+  function setActiveLink(idx) {
+    navLinks.forEach(l => l.classList.remove('active'));
+    if (idx >= 0 && idx < navLinks.length) navLinks[idx].classList.add('active');
+  }
+
+  navLinks.forEach((link, i) => {
+    link.addEventListener('click', () => {
+      clickLock = true;
+      setActiveLink(i);
+      setTimeout(() => { clickLock = false; }, 800);
+    });
+  });
 
   const activeObserver = new IntersectionObserver((entries) => {
+    if (clickLock) return;
     entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const idx = sectionIds.indexOf(entry.target.id);
-        if (idx !== -1) {
-          navLinks.forEach(l => l.classList.remove('active'));
-          navLinks[idx].classList.add('active');
-        }
-      }
+      visibilityMap.set(entry.target.id, entry.intersectionRatio);
     });
-  }, { threshold: 0.2 });
+    let bestId = null;
+    let bestRatio = 0;
+    for (const [id, ratio] of visibilityMap) {
+      if (ratio > bestRatio) { bestRatio = ratio; bestId = id; }
+    }
+    if (bestId) setActiveLink(sectionIds.indexOf(bestId));
+  }, { threshold: [0, 0.1, 0.2, 0.4, 0.6, 0.8, 1] });
 
   sections.forEach(s => activeObserver.observe(s));
 }
