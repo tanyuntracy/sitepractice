@@ -94,6 +94,13 @@ main.content-wrap {
   width: 100%;
   aspect-ratio: 1240 / 600;
   overflow: hidden;
+  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              margin-left 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.hero.is-full-bleed {
+  width: 100vw;
+  max-width: none;
+  margin-left: calc(50% - 50vw);
 }
 .hero--tall {
   aspect-ratio: 1240 / 640;

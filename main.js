@@ -190,64 +190,22 @@ window.addEventListener('touchstart', onTouchStart, { passive: true });
 window.addEventListener('touchmove', onTouchMove, { passive: false });
 window.addEventListener('keydown', onSnapKey);
 
-// Scroll-driven hero full-bleed expansion
+// Scroll-driven hero full-bleed expansion (first hero per section)
 (function initHeroBleed() {
-  const wrap = document.querySelector('.content-wrap');
-  const heroes = document.querySelectorAll('.hero');
-  if (!wrap || !heroes.length) return;
+  const targets = [];
+  document.querySelectorAll('.case-study').forEach(section => {
+    const hero = section.querySelector('.hero');
+    if (hero) targets.push(hero);
+  });
+  if (!targets.length) return;
 
-  function getContentEdge() {
-    const r = wrap.getBoundingClientRect();
-    const pad = parseFloat(getComputedStyle(wrap).paddingLeft) || 0;
-    return { left: r.left + pad, width: r.width - pad * 2 };
-  }
-
-  function update() {
-    const viewH = window.innerHeight;
-    const viewW = document.documentElement.clientWidth;
-    const content = getContentEdge();
-
-    heroes.forEach(hero => {
-      const hasInline = hero.style.width;
-      if (hasInline) {
-        hero.style.width = '';
-        hero.style.maxWidth = '';
-        hero.style.marginLeft = '';
-      }
-
-      const rect = hero.getBoundingClientRect();
-      const heroH = rect.height;
-
-      if (rect.bottom <= 0 || rect.top >= viewH) return;
-
-      const clampedTop = Math.max(0, rect.top);
-      const clampedBottom = Math.min(viewH, rect.bottom);
-      const visible = (clampedBottom - clampedTop) / heroH;
-      const progress = 1 - Math.pow(1 - Math.min(1, visible), 3);
-
-      if (progress < 0.01) return;
-
-      const naturalW = content.width;
-      const targetW = viewW;
-      const currentW = naturalW + (targetW - naturalW) * progress;
-      const shiftLeft = content.left * progress;
-
-      hero.style.width = currentW + 'px';
-      hero.style.maxWidth = 'none';
-      hero.style.marginLeft = -shiftLeft + 'px';
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      entry.target.classList.toggle('is-full-bleed', entry.intersectionRatio > 0.8);
     });
-  }
+  }, { threshold: [0, 0.2, 0.5, 0.8, 1] });
 
-  let ticking = false;
-  window.addEventListener('scroll', () => {
-    if (!ticking) {
-      requestAnimationFrame(() => { update(); ticking = false; });
-      ticking = true;
-    }
-  }, { passive: true });
-
-  window.addEventListener('resize', update);
-  update();
+  targets.forEach(hero => observer.observe(hero));
 })();
 
 const stickyNav = document.querySelector('.sticky-nav');
@@ -255,17 +213,29 @@ const section1 = document.querySelector('#section-1');
 
 if (stickyNav && section1) {
   stickyNav.classList.remove('expanded');
+  stickyNav.classList.remove('nav-ready');
 
   let navTicking = false;
 
   function updateNav() {
-    stickyNav.classList.toggle('expanded', window.scrollY > section1.offsetTop - 100);
+    if (section1.offsetTop < 200) return;
+    if (window.scrollY > section1.offsetTop - 100) {
+      stickyNav.classList.add('expanded');
+    } else {
+      stickyNav.classList.remove('expanded');
+    }
   }
 
-  window.addEventListener('load', () => {
+  function initNav() {
     updateNav();
     requestAnimationFrame(() => stickyNav.classList.add('nav-ready'));
-  });
+  }
+
+  if (document.readyState === 'complete') {
+    initNav();
+  } else {
+    window.addEventListener('load', initNav);
+  }
 
   window.addEventListener('scroll', () => {
     if (!navTicking) {
