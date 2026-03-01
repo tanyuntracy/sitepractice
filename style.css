@@ -358,11 +358,11 @@ video.hero-bg {
   position: absolute;
   top: 8.33%;
   left: 4.04%;
-  font-size: 20px;
-  font-weight: 500;
+  font-size: var(--body-large-size);
+  font-weight: 400;
   line-height: 1.4;
-  letter-spacing: -0.2px;
-  color: var(--color-text-sub);
+  letter-spacing: -0.32px;
+  color: var(--color-text);
   max-width: 29.67%;
 }
 .content-card img,
@@ -631,6 +631,7 @@ video.hero-bg {
   color: var(--color-text);
   font-weight: 500;
   text-decoration: underline;
+  text-decoration-thickness: 1.2px;
   text-decoration-skip-ink: none;
   text-underline-offset: 4px;
   text-underline-position: from-font;
@@ -743,8 +744,18 @@ video.hero-bg {
   :root { --pad: 16px; }
   .reveal-canvas { display: none; }
 
-  .info-block { flex-direction: column; gap: 32px; }
+  .section-tags { font-size: 16px; font-weight: 400; }
+
+  #section-1 .content-card:nth-child(2) video,
+  #section-1 > .detail + .detail .content-card:nth-child(2) video {
+    clip-path: none;
+  }
+
+  .info-block { flex-direction: column; gap: 32px; margin-bottom: 32px; }
   .info-body { order: -1; }
+
+  .hero-section + .detail,
+  .detail + .detail { margin-top: 32px; }
 
   .sidebar-content { flex-direction: column; gap: 24px; }
   .sidebar-text {
@@ -752,6 +763,7 @@ video.hero-bg {
     padding: 0;
     position: static;
     height: auto;
+    gap: 12px;
   }
   .sidebar-text p { width: 100%; }
   .sidebar-main { flex: none; width: 100%; }
@@ -780,25 +792,34 @@ video.hero-bg {
     height: 280px;
     display: flex;
     flex-direction: column;
-    padding: 24px;
-    gap: 16px;
+    align-items: center;
+    padding: 0 24px 24px;
+    gap: 0;
     overflow: hidden;
   }
   .content-card-label {
     position: static;
     max-width: none;
     width: 100%;
-    font-size: 14px;
+    margin: 24px 0;
+    font-size: var(--body-large-size);
     line-height: 1.4;
-    letter-spacing: 0.14px;
-    color: var(--color-text-sub);
+    letter-spacing: -0.32px;
+    color: var(--color-text);
     text-align: center;
+    flex-shrink: 0;
+  }
+  .content-card picture {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .content-card img,
   .content-card video {
     position: static;
-    width: auto;
-    max-width: 100%;
+    width: 100%;
     height: auto;
     max-height: 100%;
     object-fit: contain;
@@ -806,6 +827,7 @@ video.hero-bg {
     flex-shrink: 1;
     min-height: 0;
     clip-path: none;
+    margin: auto 0;
   }
   .content-card--image-only {
     align-items: center;
