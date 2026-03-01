@@ -8,7 +8,7 @@
   --max-w: 1880px;
   --pad: 24px;
 
-  --gap-section: clamp(80px, 18.75vw, 240px);
+  --gap-section: clamp(120px, 25vw, 400px);
   --gap-sub: clamp(60px, 12.5vw, 160px);
   --gap-header: clamp(32px, 5vw, 64px);
 
@@ -51,6 +51,7 @@ main.content-wrap {
 }
 .title-stage .page-title {
   position: absolute;
+  z-index: 2;
 }
 .title-stage .page-title:first-child {
   position: relative;
@@ -155,6 +156,7 @@ video.hero-bg {
   flex-direction: column;
   gap: 16px;
   flex-shrink: 0;
+  width: 185px;
 }
 .info-row {
   display: flex;
@@ -494,55 +496,22 @@ video.hero-bg {
   pointer-events: none;
 }
 
-[data-parallax-depth] {
-  --parallax-x: 0px;
-  --parallax-y: 0px;
-  translate: var(--parallax-x) var(--parallax-y);
-  will-change: translate;
-}
-
-.cursor-parallax-zone {
+.cursor-reveal-zone {
   position: relative;
 }
-.cursor-parallax-zone .page-title,
-.cursor-parallax-zone .section-4-title {
+.cursor-reveal-zone .section-4-title {
+  position: relative;
   z-index: 2;
 }
 
-.parallax-collage {
+.reveal-canvas {
   position: absolute;
   top: 0;
   left: 50%;
-  width: 100vw;
-  height: 100%;
   transform: translateX(-50%);
   pointer-events: none;
   z-index: 1;
 }
-
-.collage-img {
-  position: absolute;
-  display: block;
-  height: auto;
-  object-fit: cover;
-  border: 0;
-}
-
-.collage-1  { top: 12%; left: 14%; width: 7%; }
-.collage-2  { top: 4%;  left: 33%; width: 5.5%; }
-.collage-3  { top: 1%;  left: 44%; width: 8.5%; }
-.collage-4  { top: 4%;  right: 19%; width: 3.5%; }
-.collage-5  { top: 20%; left: 8%;  width: 21%; }
-.collage-6  { top: 8%;  left: 36%; width: 28%; z-index: 3; }
-.collage-7  { top: 24%; right: 13%; width: 11%; }
-.collage-8  { top: 44%; left: 5%;  width: 4%; }
-.collage-9  { top: 35%; left: 2%;  width: 19%; }
-.collage-10 { top: 48%; left: 14%; width: 11%; z-index: 3; }
-.collage-11 { top: 42%; right: 9%; width: 13%; }
-.collage-12 { top: 58%; left: 32%; width: 24%; z-index: 3; }
-.collage-13 { top: 80%; left: 26%; width: 7.5%; }
-.collage-14 { top: 78%; left: 40%; width: 9%; }
-.collage-15 { top: 68%; right: 18%; width: 3.5%; }
 
 .animate-on-scroll {
   opacity: 0;
@@ -585,7 +554,7 @@ video.hero-bg {
 
 @media (max-width: 767px) {
   :root { --pad: 16px; }
-  .parallax-collage { display: none; }
+  .reveal-canvas { display: none; }
 
   .info-block { flex-direction: column; gap: 32px; }
   .info-body { order: -1; }
@@ -623,6 +592,7 @@ video.hero-bg {
 
 @media (min-width: 768px) and (max-width: 1279px) {
   .info-block { gap: 32px; }
+  .info-meta { width: 140px; }
   .sidebar-text { width: 140px; padding: 24px 0 0 0; }
   .sidebar-text p { width: 100%; }
 }

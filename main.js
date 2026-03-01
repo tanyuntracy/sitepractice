@@ -455,62 +455,135 @@ if (navLinks.length && sections.length) {
   sections.forEach(s => activeObserver.observe(s));
 }
 
-document.querySelectorAll('.collage-img').forEach(img => {
-  img.addEventListener('error', () => { img.style.display = 'none'; }, { once: true });
-});
+(function initCanvasReveal() {
+  const zones = document.querySelectorAll('.cursor-reveal-zone');
+  if (!zones.length) return;
 
-(function initCursorParallax() {
-  const zones = document.querySelectorAll('.cursor-parallax-zone');
-  if (!zones.length || window.matchMedia('(pointer: coarse)').matches) return;
+  const isTouch = window.matchMedia('(pointer: coarse)').matches;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
 
-  const mouse = { x: 0.5, y: 0.5 };
-  const current = { x: 0.5, y: 0.5 };
-  const EASE = 0.06;
-  const MAX_SHIFT = 25;
-  const activeZones = new Set();
-  let rafId = null;
+  if (!isTouch) {
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    }, { passive: true });
+  }
 
-  window.addEventListener('mousemove', (e) => {
-    mouse.x = e.clientX / window.innerWidth;
-    mouse.y = e.clientY / window.innerHeight;
-  }, { passive: true });
+  function easeInOut(t) { return t * t * (3 - 2 * t); }
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        activeZones.add(entry.target);
-        if (!rafId) tick();
+  function wrap(min, max, val) {
+    const r = max - min;
+    return min + ((((val - min) % r) + r) % r);
+  }
+
+  zones.forEach(zone => {
+    const canvas = zone.querySelector('.reveal-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    const prefix = zone.dataset.revealPrefix || '';
+    const count = parseInt(zone.dataset.revealCount, 10) || 0;
+    const images = [];
+    for (let i = 1; i <= count; i++) {
+      const img = new Image();
+      img.src = prefix + i + '.webp';
+      images.push(img);
+    }
+
+    const CELL = 0.075;
+    const GAP = 0.06;
+    const MAX_DIST = 0.3;
+    const MAX_SCALE = 4;
+    const LERP = 0.005;
+    const DRIFT = 50;
+
+    const focus = { x: window.innerWidth / 2, y: 0 };
+    let t0 = 0, tPrev = 0, active = false, raf = null;
+
+    function resize() {
+      const h = zone.offsetHeight;
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = h * dpr;
+      canvas.style.width = window.innerWidth + 'px';
+      canvas.style.height = h + 'px';
+      focus.y = h / 2;
+    }
+
+    function tick(now) {
+      if (!active) return;
+      if (!t0) { t0 = now; tPrev = now; }
+      const dt = Math.min(now - tPrev, 50);
+      tPrev = now;
+      const elapsed = (now - t0) / 1000;
+
+      const rect = zone.getBoundingClientRect();
+      const vw = window.innerWidth;
+      const vh = canvas.height / dpr;
+
+      if (isTouch) {
+        const rad = Math.min(vw, vh) * 0.35;
+        focus.x = vw / 2 + rad * Math.cos(elapsed * 0.75);
+        focus.y = vh / 2 + rad * Math.sin(elapsed * 0.75);
       } else {
-        activeZones.delete(entry.target);
-        entry.target.querySelectorAll('[data-parallax-depth]').forEach(el => {
-          el.style.removeProperty('--parallax-x');
-          el.style.removeProperty('--parallax-y');
-        });
-        if (!activeZones.size && rafId) {
-          cancelAnimationFrame(rafId);
-          rafId = null;
+        focus.x += (mouse.x - focus.x) * LERP * dt;
+        focus.y += ((mouse.y - rect.top) - focus.y) * LERP * dt;
+      }
+
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, vw, vh);
+
+      const ready = images.filter(im => im.complete && im.naturalWidth);
+      if (!ready.length) { raf = requestAnimationFrame(tick); return; }
+
+      const cell = vw * CELL;
+      const step = cell + vw * GAP;
+      const maxD = vw * MAX_DIST;
+      const cols = Math.ceil(vw / step) + 2;
+      const rows = Math.ceil(vh / step) + 2;
+
+      let idx = 0;
+      for (let r = -1; r < rows; r++) {
+        for (let c = -1; c < cols; c++) {
+          const cx = wrap(-step, vw + step, c * step + elapsed * DRIFT);
+          const cy = wrap(-step, vh + step, r * step - elapsed * DRIFT * 0.7);
+          const dx = cx - focus.x;
+          const dy = cy - focus.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < maxD) {
+            const s = Math.max(0, MAX_SCALE - easeInOut(dist / maxD) * MAX_SCALE);
+            if (s > 0.01) {
+              const img = ready[idx % ready.length];
+              const w = cell * s;
+              const h = w * img.naturalHeight / img.naturalWidth;
+              ctx.drawImage(img, cx - w / 2, cy - h / 2, w, h);
+            }
+          }
+          idx++;
         }
       }
-    });
-  }, { threshold: 0.05 });
 
-  zones.forEach(z => observer.observe(z));
+      raf = requestAnimationFrame(tick);
+    }
 
-  function tick() {
-    current.x += (mouse.x - current.x) * EASE;
-    current.y += (mouse.y - current.y) * EASE;
-
-    const ox = (current.x - 0.5) * 2;
-    const oy = (current.y - 0.5) * 2;
-
-    activeZones.forEach(zone => {
-      zone.querySelectorAll('[data-parallax-depth]').forEach(el => {
-        const d = parseFloat(el.dataset.parallaxDepth) || 0;
-        el.style.setProperty('--parallax-x', (ox * d * MAX_SHIFT) + 'px');
-        el.style.setProperty('--parallax-y', (oy * d * MAX_SHIFT) + 'px');
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          active = true;
+          resize();
+          t0 = 0;
+          if (!raf) raf = requestAnimationFrame(tick);
+        } else {
+          active = false;
+          if (raf) { cancelAnimationFrame(raf); raf = null; }
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
       });
-    });
+    }, { threshold: 0.05 });
 
-    rafId = requestAnimationFrame(tick);
-  }
+    obs.observe(zone);
+    window.addEventListener('resize', resize);
+  });
 })();
