@@ -16,6 +16,94 @@
   --body-large-size: clamp(20px, 2.5vw, 32px);
 }
 
+.password-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--color-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+.password-gate.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.password-gate-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+.password-gate-label {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--color-text-sub);
+  letter-spacing: -0.2px;
+}
+.password-gate-form {
+  display: flex;
+  align-items: center;
+  border-bottom: 1.5px solid rgba(26, 25, 21, 0.75);
+  gap: 8px;
+  transition: border-color 0.2s ease;
+}
+.password-gate-form.shake {
+  animation: gate-shake 0.4s ease;
+}
+.password-gate-form.error {
+  border-color: #c0392b;
+}
+.password-gate-input {
+  font-family: var(--font);
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: 4px;
+  color: var(--color-text);
+  background: none;
+  border: none;
+  outline: none;
+  width: 200px;
+  padding: 8px 0;
+  caret-color: var(--color-text);
+}
+.password-gate-submit {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text);
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  opacity: 0.5;
+  transition: opacity 0.2s ease;
+}
+.password-gate-submit:hover {
+  opacity: 1;
+}
+.password-gate-error {
+  font-size: 14px;
+  color: #c0392b;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.password-gate-error.visible {
+  opacity: 1;
+}
+@keyframes gate-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-6px); }
+  80% { transform: translateX(6px); }
+}
+
+body.gate-locked {
+  overflow: hidden;
+}
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
 body { font-family: var(--font); color: var(--color-text); background: var(--color-bg); padding-bottom: 72px; }

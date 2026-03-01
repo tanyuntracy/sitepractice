@@ -12,6 +12,19 @@
 </head>
 <body>
 
+  <div class="password-gate" id="passwordGate">
+    <div class="password-gate-inner">
+      <p class="password-gate-label">Password</p>
+      <form class="password-gate-form" id="passwordForm">
+        <input type="password" class="password-gate-input" id="passwordInput" autocomplete="off" autofocus>
+        <button type="submit" class="password-gate-submit" aria-label="Submit">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </form>
+      <p class="password-gate-error" id="passwordError">Incorrect password</p>
+    </div>
+  </div>
+
   <main class="content-wrap">
     <section class="title-area title-stage cursor-reveal-zone" id="title"
              data-reveal-prefix="assets/parallax/title-" data-reveal-count="15">

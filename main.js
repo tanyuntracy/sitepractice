@@ -1,3 +1,39 @@
+/* ── Password gate ── */
+const SITE_PASSWORD = 'tracy&intercom';
+
+(function initPasswordGate() {
+  const gate = document.getElementById('passwordGate');
+  const form = document.getElementById('passwordForm');
+  const input = document.getElementById('passwordInput');
+  const error = document.getElementById('passwordError');
+
+  if (!gate || !form) return;
+
+  if (sessionStorage.getItem('site_auth') === '1') {
+    gate.classList.add('hidden');
+    return;
+  }
+
+  document.body.classList.add('gate-locked');
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (input.value === SITE_PASSWORD) {
+      sessionStorage.setItem('site_auth', '1');
+      document.body.classList.remove('gate-locked');
+      gate.classList.add('hidden');
+    } else {
+      error.classList.add('visible');
+      form.classList.remove('shake');
+      form.classList.add('error');
+      void form.offsetWidth;
+      form.classList.add('shake');
+      input.value = '';
+      input.focus();
+    }
+  });
+})();
+
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
 const initialHash = window.location.hash;
