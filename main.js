@@ -1,9 +1,26 @@
-/* ── Password gate (temporarily disabled) ── */
-// const SITE_PASSWORD = 'tracy&intercom';
+(function passwordGate() {
+  const SITE_PASSWORD = 'tracy&intercom';
+  const KEY = 'site_authed';
 
-(function initPasswordGate() {
-  const gate = document.getElementById('passwordGate');
-  if (gate) gate.classList.add('hidden');
+  if (sessionStorage.getItem(KEY)) return;
+
+  document.documentElement.style.visibility = 'hidden';
+
+  let granted = false;
+  while (!granted) {
+    const input = prompt('Password');
+    if (input === null) break;
+    if (input === SITE_PASSWORD) {
+      granted = true;
+      sessionStorage.setItem(KEY, '1');
+    }
+  }
+
+  if (granted) {
+    document.documentElement.style.visibility = '';
+  } else {
+    document.body.innerHTML = '';
+  }
 })();
 
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
