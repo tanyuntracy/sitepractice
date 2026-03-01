@@ -26,6 +26,9 @@ const scrollObserver = new IntersectionObserver((entries) => {
 document.querySelectorAll('.animate-on-scroll, .title-reveal')
   .forEach(el => scrollObserver.observe(el));
 
+document.querySelectorAll('.interstitial-title .blur-in')
+  .forEach(el => scrollObserver.observe(el));
+
 function ensureMuted(video) {
   video.muted = true;
   video.setAttribute('muted', '');
@@ -360,8 +363,8 @@ if (stickyNav && section1) {
 }
 
 const navLinks = document.querySelectorAll('.nav-link');
-const sections = document.querySelectorAll('.case-study');
-const sectionIds = ['section-1', 'section-2', 'section-3', 'section-4'];
+const sections = document.querySelectorAll('.case-study, .interstitial-title');
+const sectionIds = ['section-1', 'section-2', 'section-3', 'section-4-intro'];
 let clickLock = false;
 let lastHash = window.location.hash;
 

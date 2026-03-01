@@ -275,6 +275,18 @@ video.hero-bg {
   min-width: 0;
 }
 
+.interstitial-title {
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: var(--gap-section);
+  scroll-margin-top: 64px;
+}
+.interstitial-title + .case-study {
+  margin-top: var(--gap-sub);
+}
+
 .section-4-title {
   font-size: var(--title-size);
   font-weight: 400;
@@ -283,7 +295,7 @@ video.hero-bg {
   color: var(--color-text);
   text-align: center;
   max-width: 315px;
-  margin: 0 auto var(--gap-sub);
+  margin: 0 auto;
 }
 .project + .project { margin-top: var(--gap-sub); }
 .project .hero { margin-bottom: var(--gap-header); }
