@@ -233,8 +233,7 @@ window.addEventListener('keydown', onSnapKey);
         return;
       }
 
-      const heroThird = rect.top + rect.height / 3;
-      const raw = 2 * (viewH - heroThird) / viewH;
+      const raw = (viewH - rect.top) / (viewH / 2);
       const clamped = Math.max(0, Math.min(1, raw));
       const progress = clamped * clamped * (3 - 2 * clamped);
 
