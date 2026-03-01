@@ -578,17 +578,37 @@ video.hero-bg {
 }
 
 @media (max-width: 767px) {
+  :root { --pad: 16px; }
   .parallax-collage { display: none; }
+
   .info-block { flex-direction: column; gap: 32px; }
-  .sidebar-content { flex-direction: column; gap: 24px; padding: 0 var(--pad); }
-  .sidebar-text { width: 100%; padding: 0 var(--pad); }
+  .info-body { order: -1; }
+
+  .sidebar-content { flex-direction: column; gap: 24px; }
+  .sidebar-text {
+    width: 100%;
+    padding: 0;
+    position: static;
+    height: auto;
+  }
   .sidebar-text p { width: 100%; }
+  .sidebar-main { flex: none; width: 100%; }
+  .card-stack { flex: none; }
+
+  .title-area { padding: 0; }
+
+  .section-4-title { max-width: none; width: 100%; }
+
   .content-card { aspect-ratio: auto; min-height: 300px; }
   .content-card img,
   .content-card video { width: calc(100% - 80px); height: auto; }
+  .sticky-nav {
+    max-width: none;
+    padding: 0 8px 32px;
+  }
   .nav-side { display: none; }
   .nav-links { display: none; }
-  .sticky-nav { justify-content: center; }
+  .nav-card { flex-grow: 1; }
 }
 
 @media (min-width: 768px) and (max-width: 1279px) {
