@@ -1,2 +1,2 @@
 import { defineConfig } from 'vite'
-export default defineConfig({ base: '/sitepractice/' })
+export default defineConfig({ base: '/' })
