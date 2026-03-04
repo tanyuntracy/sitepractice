@@ -656,7 +656,11 @@ video.hero-bg {
 }
 
 @media (max-width: 1279px) {
-  :root { --pad: 16px; }
+  :root {
+    --pad: 16px;
+    --gap-section: clamp(80px, 20vw, 400px);
+    --gap-sub: clamp(48px, 10vw, 160px);
+  }
   .reveal-canvas { display: none; }
 
   .section-tags { font-size: 16px; font-weight: 400; }
@@ -703,6 +707,7 @@ video.hero-bg {
   }
   .gallery-card-desc {
     margin-top: 16px;
+    margin-bottom: 0;
   }
 
   .content-card {
@@ -712,7 +717,7 @@ video.hero-bg {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: clamp(24px, 6vw, 72px) 24px clamp(32px, 8vw, 96px);
+    padding: clamp(24px, 6vw, 72px) 24px;
     gap: clamp(16px, 4vw, 48px);
     overflow: hidden;
   }
@@ -766,7 +771,7 @@ video.hero-bg {
   .sticky-nav.at-end .nav-card { flex-grow: 1 !important; }
   .nav-side { display: none; }
   .nav-links { display: none; }
-  .nav-card { flex-grow: 1; padding: 16px !important; }
+  .nav-card { flex-grow: 1; min-width: 0; padding: 16px !important; }
 
   /* 1 — s1-detail-human: flush right + bottom */
   #section-1 > .detail + .detail .content-card:first-child {

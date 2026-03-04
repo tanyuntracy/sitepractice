@@ -29,8 +29,8 @@ const initialHash = window.location.hash;
 if (initialHash) {
   history.replaceState(null, '', window.location.pathname + window.location.search);
 }
-window.scrollTo(0, 0);
-requestAnimationFrame(() => window.scrollTo(0, 0));
+window.scrollTo({ top: 0, behavior: 'instant' });
+requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: 'instant' }));
 
 const scrollObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
@@ -176,9 +176,12 @@ setInterval(() => {
   if (!stalledVideos.size) return;
   stalledVideos.forEach(video => {
     if (video.dataset.inView !== '1') return;
+    if (video.dataset.recovering) return;
+    video.dataset.recovering = '1';
     ensureMuted(video);
     video.load();
     video.addEventListener('canplay', () => {
+      delete video.dataset.recovering;
       stalledVideos.delete(video);
       tryPlay(video);
     }, { once: true });
@@ -230,6 +233,7 @@ let touchStartY = 0;
 function doSnap() {
   hasSnapped = true;
   cleanup();
+  if (!snapTarget) return;
   const y = snapTarget.getBoundingClientRect().top + window.scrollY - 64;
   document.documentElement.style.scrollBehavior = 'auto';
   window.scrollTo({ top: y, behavior: 'smooth' });
@@ -442,14 +446,15 @@ if (stickyNav && section1) {
 }
 
 const navLinks = document.querySelectorAll('.nav-link');
-const sections = document.querySelectorAll('.case-study, .interstitial-title');
-const sectionIds = ['section-1', 'section-2', 'section-3', 'section-4-intro'];
+const sections = document.querySelectorAll('.case-study, .interstitial-title:not(.end-section)');
+const sectionIds = ['section-1', 'section-2', 'section-3', 'section-4-intro', 'section-4'];
 let clickLock = false;
 let lastHash = window.location.hash;
 
 function setActiveLink(idx) {
   navLinks.forEach(l => l.classList.remove('active'));
-  if (idx >= 0 && idx < navLinks.length) navLinks[idx].classList.add('active');
+  const clamped = Math.min(idx, navLinks.length - 1);
+  if (clamped >= 0) navLinks[clamped].classList.add('active');
 }
 
 function updateHash(hash) {
@@ -487,36 +492,14 @@ window.addEventListener('scroll', () => {
 
     if (currentId) {
       updateHash('#' + currentId);
-      setActiveLink(sectionIds.indexOf(currentId));
+      const idx = sectionIds.indexOf(currentId);
+      if (idx >= 0) setActiveLink(idx);
     } else {
       updateHash('');
       navLinks.forEach(l => l.classList.remove('active'));
     }
   });
 }, { passive: true });
-
-if (navLinks.length && sections.length) {
-  const visibilityMap = new Map();
-
-  const activeObserver = new IntersectionObserver((entries) => {
-    if (clickLock) return;
-    entries.forEach(entry => {
-      visibilityMap.set(entry.target.id, entry.intersectionRatio);
-    });
-    let bestId = null;
-    let bestRatio = 0;
-    for (const [id, ratio] of visibilityMap) {
-      if (ratio > bestRatio) { bestRatio = ratio; bestId = id; }
-    }
-    if (bestRatio > 0.02) {
-      setActiveLink(sectionIds.indexOf(bestId));
-    } else {
-      navLinks.forEach(l => l.classList.remove('active'));
-    }
-  }, { threshold: [0, 0.1, 0.2, 0.4, 0.6, 0.8, 1] });
-
-  sections.forEach(s => activeObserver.observe(s));
-}
 
 (function initCanvasReveal() {
   const zones = document.querySelectorAll('.cursor-reveal-zone');
